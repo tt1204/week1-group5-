@@ -1,4 +1,4 @@
-// 10727207±i´@_10727240¿à¨÷¨f 
+// 10727207å¼µå©·_10727240è³´å·ç‹„ 
 #include <iostream>
 #include <math.h>
 # include <stdlib.h>
@@ -22,26 +22,26 @@ int main(int argc, char** argv) {
 	int usercmd = 0;
     RemindOfBegin();
 	
-	while ( cin >> usercmd ) { // ¿é¤J¤@¾ã¼Æ´N·|¶] 
+	while ( cin >> usercmd ) { // è¼¸å…¥ä¸€æ•´æ•¸å°±æœƒè·‘ 
 	  
-	  if ( usercmd == 1)//¿é¤J«ü¥OQuit 
+	  if ( usercmd == 1)//è¼¸å…¥æŒ‡ä»¤Quit 
 	    break;
-	  else if( usercmd == 2 ) {//¥Î°j°é¶] 
+	  else if( usercmd == 2 ) {//ç”¨è¿´åœˆè·‘ 
 	  
         printf( "Input a number: " ) ;
         fibnum = 0,f0 = 1, nfb = 1,temp = 0;
 	    unsigned long long int sqrtintloop = 0,  looptime = 0, causemax = 0;
         bool find = false;
         int max = 0;
-        scanf( "%llu", &fibnum );//¿é¤J¤@¤£¤j©ó92ªº¼Æ 
+        scanf( "%llu", &fibnum );//è¼¸å…¥ä¸€ä¸å¤§æ–¼92çš„æ•¸ 
         for ( int i = 1; i <= fibnum && i <= 92; i ++ ) {
           
-          max ++;//§ó§ïoutloop 
+          max ++;//æ›´æ”¹outloop 
           UseLoopToFindFib( i );
 		  sqrtintloop = sqrt( nfb )  ;
 		   	
-		  	//¥ı§ä³o­Ó¼Æªº¥­¤è®Ú 
-        // ¬İ¦³¨S¦³­è¦n¾ã°£¡A¦pªG¦³´N§ì¨ì
+		  	//å…ˆæ‰¾é€™å€‹æ•¸çš„å¹³æ–¹æ ¹ 
+        // çœ‹æœ‰æ²’æœ‰å‰›å¥½æ•´é™¤ï¼Œå¦‚æœæœ‰å°±æŠ“åˆ°
           sqrtintloop = UseLoopToFindFactor( sqrtintloop, looptime );
           causemax = nfb / sqrtintloop;
           printf ( "[%2d] %llu = %llu * %llu \t(Inner loop: %2llu times)\n", 
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
           looptime = 0;
 		  find = false;
 
-        } // §ä¶O¤ó¼Æ¦C 
+        } // æ‰¾è²»æ°æ•¸åˆ— 
         if ( fibnum > 92 )
           cout << "outofrange" ;
         else
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
   
         maxj = 0;
         scanf( "%llu", &fibnum );
-        for ( int j = 1; j <= fibnum; j++){
+        for ( int j = 1; j <= fibnum && j <= 92; j++){
           maxj ++;
 		  
           nfb = UseRecursionToFindFib( j );
@@ -141,7 +141,7 @@ unsigned long long int UseSqrtToFindFactor( unsigned long long int &sqrtint ) {+
 
 unsigned long long int UseRecursionToFindFib( int current ) { 
    if ( current == 1 ) 
-	  return fibTogether[1];//²Ä¤@¶µ¬°¤@ 
+	  return fibTogether[1];//ç¬¬ä¸€é …ç‚ºä¸€ 
     else {
     	fibTogether[current ] = fibTogether[current -1 ] + fibTogether[current - 2 ];
       	return fibTogether[current ];
@@ -150,23 +150,23 @@ unsigned long long int UseRecursionToFindFib( int current ) {
 
 unsigned long long int UseLoopToFindFib( int current ) {
     if ( current == 1 ) 
-	  ;//²Ä¤@¶µ¬°¤@ 
+	  ;//ç¬¬ä¸€é …ç‚ºä¸€ 
     else {
       	temp = nfb; 
-      	nfb = nfb + f0;//«e¨â¶µ¬Û¥[ 
+      	nfb = nfb + f0;//å‰å…©é …ç›¸åŠ  
         f0 = temp;
 	
-	} // ¤@­Ó¼Æ¤@­Ó¼Æ¨Ó 
+	} // ä¸€å€‹æ•¸ä¸€å€‹æ•¸ä¾† 
 } // UseRecursionToFindFib
 
 unsigned long long int UseLoopToFindFactor( unsigned long long int sqrtintloop, unsigned long long int &looptime ) {
 	bool find = false;
     while ( !find ) {
-		if ( nfb % sqrtintloop == 0 ) {//¦pªG­è¦n¾ã°£´N§ä¨ì¤F 
-			find = true;//¬°¤F¶]¥X°j°é 
+		if ( nfb % sqrtintloop == 0 ) {//å¦‚æœå‰›å¥½æ•´é™¤å°±æ‰¾åˆ°äº† 
+			find = true;//ç‚ºäº†è·‘å‡ºè¿´åœˆ 
 		} // if()
 		else {
-			sqrtintloop --;//©¹¤U¤@­Ó¶] 
+			sqrtintloop --;//å¾€ä¸‹ä¸€å€‹è·‘ 
 		}
 		looptime ++;
 	}
