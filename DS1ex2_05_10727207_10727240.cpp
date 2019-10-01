@@ -39,13 +39,13 @@ public:
 	 } // setXY()
 	 
 	 
-	 int getX() const // 拿到X質 
+	 int getX() const // 拿到X值
 	 {
 	 	return x;
 	 }// getX()
 	 
 	 
-	 int getY() const // 拿到Y質 
+	 int getY() const // 拿到Y值 
 	 {
 	 	return y;
 	 }// getY()
@@ -74,7 +74,7 @@ public:
 	 bool match( const CoXY& pt) const // 為了找有無一樣的座標 
 	 {
 	 	
-	 	if ( ( x == pt.x ) && ( y == pt.y ) )
+	 	if ( ( x == pt.x ) && ( y == pt.y ) ) 
 	 		return true;
 	 	
 	 	return false;
@@ -111,8 +111,8 @@ bool load( string fileName )  //讀取檔案並設定迷宮
 	bool	success = false; //判斷讀取有無成功 
 	
 	
-	fileName = "input" + fileName + ".txt";
-	infile = fopen(fileName.c_str(),"r");
+	fileName = "input" + fileName + ".txt"; // 為了補齊檔案名稱
+	infile = fopen(fileName.c_str(),"r"); //開檔
 	if( infile == NULL) // 如果沒打開檔案 
 		cout<<endl<<fileName<<"does not exist!"<<endl;
 	else
@@ -138,7 +138,7 @@ bool load( string fileName )  //讀取檔案並設定迷宮
 			if( line == coMax.getY()) // 行數正確 
 				success = true;
 		} // if()
-		fclose(infile);
+		fclose(infile); // 關檔
 	 } // else
 	 
 	 return success;
@@ -146,10 +146,10 @@ bool load( string fileName )  //讀取檔案並設定迷宮
 
 
 
-void show(){
+void show(){ // 印mArray
 	for ( int j = 0 ; j < coMax.getY(); j ++){
 		for ( int i = 0 ; i < coMax.getX(); i ++)
-			cout << mArray[j][i];
+			cout << mArray[j][i]; 
 		cout << endl;
 	} // for()
 } // show
@@ -177,25 +177,24 @@ void copy( Maze aMaze) { // 複製一個地圖
 		
 		
 		
-CoXY isGoal(Maze vMaze, int count ){
+CoXY isGoal(Maze vMaze, int count ){ // 找終點並設定
 	CoXY temp;
 	for( int i =0; i< coMax.getX(); i++) {
-	
 		for ( int j = 0; j <coMax.getY();j++) {
-			if(vMaze.mArray[j][i] == 'G'&& count == 0) {
-				temp.setXY(j,i);
+			if(vMaze.mArray[j][i] == 'G'&& count == 0) { //計數是為了兩個或兩個以上的終點
+				temp.setXY(j,i);//設終點位置
 				return temp;
 			
 			} // if()
 			else if (vMaze.mArray[j][i] == 'G')
-				count --;
+				count --;//一個或以上，之前找過這個終點
 		} // for()
 	}//for()
 	return temp;
 		
 } // isGoal()
 	
-void clear(Maze vMaze){
+void clear(Maze vMaze){ // 將走過的痕跡消除
 	
 	for( int i =0; i< coMax.getX(); i++) 
 		for ( int j = 0; j <coMax.getY();j++) 
@@ -204,23 +203,23 @@ void clear(Maze vMaze){
 		
 } // clear
 
-bool findGoal(Maze vMaze,int x, int y, CoXY coGoal){
+bool findGoal(Maze vMaze,int x, int y, CoXY coGoal){ // 找走到終點的路徑
 	
-	bool done;
+	bool done; //有無走到終點
 	if ( ( x < 0 ) || ( x >= coMax.getX() ) 
-		 		|| ( y < 0 ) || (y >= coMax.getY() ) )
+		 		|| ( y < 0 ) || (y >= coMax.getY() ) ) // 有無超出範圍
 	 	return false;
-	else if( vMaze.mArray[x][y] == 'O')
+	else if( vMaze.mArray[x][y] == 'O') // 有無碰到障礙
 		return false;
-	else if(  vMaze.mArray[x][y] == 'G'&&x == coGoal.getY()&& y == coGoal.getX())
+	else if(  vMaze.mArray[x][y] == 'G'&&x == coGoal.getY()&& y == coGoal.getX())//有無找到終點，並是我剛好要找的
 		return true;
-	else if( ( vMaze.mArray[x][y] == 'V') )
+	else if( ( vMaze.mArray[x][y] == 'V') ) // 有無走過
 		return false;
 	else{
-		if(vMaze.mArray[x][y] != 'G')
-			vMaze.mArray[x][y] = 'V';
+		if(vMaze.mArray[x][y] != 'G') // 如果不是終點，還是空路
+			vMaze.mArray[x][y] = 'V';// 設成走過
 		done = false;
-		for( int i = 0; i < 4&&!done; i++ ) { // 還沒找到終點 
+		for( int i = 0; i < 4&&!done; i++ ) { // 還沒找到終點 ，走四個方位
 			if(i ==0 )
 			 	done =  findGoal( vMaze, x+1,  y,  coGoal);
 			if(i == 1 )
@@ -231,7 +230,7 @@ bool findGoal(Maze vMaze,int x, int y, CoXY coGoal){
 				done = findGoal( vMaze, x,  y-1,  coGoal);
 			
 		} //for()
-		if (done) {
+		if (done) { // 走到終點的路徑
 			if(vMaze.mArray[x][y] != 'G')
 				mArray[x][y] = 'R';
 		} // if()
