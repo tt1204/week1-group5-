@@ -147,8 +147,8 @@ bool load( string fileName )  //讀取檔案並設定迷宮
 
 
 void show(){
-	for ( int j = 0 ; j < coMax.getX(); j ++){
-		for ( int i = 0 ; i < coMax.getY(); i ++)
+	for ( int j = 0 ; j < coMax.getY(); j ++){
+		for ( int i = 0 ; i < coMax.getX(); i ++)
 			cout << mArray[j][i];
 		cout << endl;
 	} // for()
