@@ -1,0 +1,271 @@
+//10727207 張婷 10727240 賴卷狄 
+#include <iostream>
+#include <math.h>
+#include <string.h>
+# include <stdlib.h>
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+#define MAX_LEN 255
+
+using namespace std ;
+
+struct OpatorOrDigit{
+	char inner;
+	OpatorOrDigit *next;
+};
+
+
+char skipWhiteSpace() { // 回傳一非空白字元 
+	char noWhiteSpace = ' ';
+	scanf( "%d", &noWhiteSpace);
+	while( noWhiteSpace == ' ' || noWhiteSpace == '\t')
+		scanf( "%d", &noWhiteSpace);
+	
+	return noWhiteSpace;
+	
+} // SkipWhiteSpace()
+
+bool isDigit(char checkChar){ // 確認是否為數字
+	
+	if( checkChar >= '0'&& checkChar <= '9')
+		return true;
+		
+	return false; 
+	
+}//isdigit()
+
+bool isOpator( char checkChar ) {
+	
+	if(checkChar=='+'||checkChar=='-'||checkChar=='*'||checkChar=='/')
+		return true;
+	
+	return false;
+	
+}//isOpator
+
+bool isWhiteSpace( char checkChar ) {
+	
+	if(checkChar=='\t'||checkChar==' ')
+		return true;
+	
+	return false;
+	
+}//isOpator
+
+bool isParenthese( char checkChar )
+{
+	if ( checkChar == '(' || checkChar == ')')
+		return true;
+		
+	return false;
+	
+} // isParenthese
+
+bool checkHasIllegalChar( string infixS ){
+	bool check = true;
+	for( int i = 0; i< infixS.size() ; i ++ ){
+	
+		if( !isOpator(infixS[i]) && !isDigit(infixS[i]) && !isWhiteSpace( infixS[i] ) && !isParenthese( infixS[i])){
+			cout << "Error 1: " <<infixS[i] << ": is not a legitimate character."<<endl;
+			check = false;
+		}//if()
+	} // for()
+	
+	return check;
+		
+	
+} // checkHasIllegalChar()
+
+bool checkHasUnnecessaryParenthese(string infixS){ // 有無多的括號
+ 
+	int count = 0;
+	
+	for( int i = 0; i< infixS.size() ; i ++ ){
+		if ( infixS[i] == '(' && count >= 0 )
+			count ++;
+		else if ( infixS[i] == ')' && count >= 0 )
+			count --;
+	
+	} // for()
+	
+	
+	if( count == 0)
+		return true;
+	else if(count > 0)
+		cout << "Error 2: there is one extra open parenthesis.";
+	else if(count < 0)
+		cout << "Error 2: there is one extra close parenthesis.";
+		
+	
+		
+	return false;
+	
+} // checkHasUnnecessaryBracet()
+
+bool checkExtraOperator(string infixS){
+	
+	bool check = true;
+	bool lastIsOperator = false;
+	for( int i = 0; i< infixS.size()  ; i ++ ){
+	
+		if( isOpator(infixS[i]) && !lastIsOperator)
+			lastIsOperator = true;
+		else if( isOpator(infixS[i]) && lastIsOperator ){
+			check = false;
+			lastIsOperator = false;
+			cout << "Error 3: there is one extra operator.";
+		}	//else if
+		
+		else if(isDigit(infixS[i]) && lastIsOperator)
+			lastIsOperator = false;
+		else if(isParenthese(infixS[i]) && lastIsOperator)
+			lastIsOperator = false;
+		
+		 	
+		
+	} // for()
+	if(lastIsOperator)
+		check = false;
+	return check;
+} // checkExtraOperator()
+
+bool checkExtraOperand(string infixS){
+	
+	bool check = true;
+	bool lastIsCloseParenthese = false;
+	for( int i = 0; i< infixS.size()  ; i ++ ){
+	
+		if( infixS[i] == ')'&& !lastIsCloseParenthese)
+			lastIsCloseParenthese = true;
+		else if( isDigit(infixS[i]) && lastIsCloseParenthese ){
+			check = false;
+			lastIsCloseParenthese = false;
+			cout << "Error 3: there is one extra operand.";
+		}	//else if
+		else if(isOpator(infixS[i]) && lastIsCloseParenthese)
+			lastIsCloseParenthese = false;
+		else if(infixS[i] == '(' && lastIsCloseParenthese)
+			lastIsCloseParenthese = false;
+			
+		
+	} // for()
+	
+	return check;
+} // checkExtraOperator()
+
+bool checkhasInfixInTheParentheses(string infixS){
+ 	
+ 	bool check = true;
+ 	bool hasDigitIn = true;
+ 	bool hasAUnDealOpator = false;
+ 	bool nowOpen = false;
+ 	int openNum = 0; // (這個括弧的數量 
+ 	for( int i = 0; i< infixS.size()  ; i ++ ){
+	
+		if( infixS[i] == '(') {
+			hasDigitIn = false;
+			nowOpen = true;
+			openNum ++;
+		}
+		else if( infixS[i] == ')' &&  openNum == 1){
+			nowOpen = false;
+			openNum --;
+		
+		}	//else if
+		else if(nowOpen){
+			if( isDigit(infixS[i]) && !hasDigitIn && !hasAUnDealOpator) //如果現在只看到一個數字前面沒任何運算子 
+				hasDigitIn = true;
+			else if(isOpator(infixS[i])&& !hasDigitIn) {// 前面沒數字直接是運算子 
+				check = false;
+				cout << "Error 3: it is not infix in the parentheses.";
+			}
+			else if(isOpator(infixS[i])&& hasDigitIn){ 
+				hasAUnDealOpator = true;
+				hasDigitIn = false;
+			}  // else if()
+			else if( isDigit(infixS[i]) && !hasDigitIn && hasAUnDealOpator){
+				hasDigitIn = true;
+				hasAUnDealOpator = false;
+			} // else if()
+		} // else if()
+		
+		
+			
+		
+	} // for()
+	
+ 		if( !nowOpen && hasAUnDealOpator ) {
+			check = false;
+			cout << "Error 3: it is not infix in the parentheses.";
+		} // else if()
+		else if( !nowOpen && !hasDigitIn ) {
+			check = false;
+			cout << "Error 3: it is not infix in the parentheses.";
+		} // else if()
+ 	
+ 	return check;
+ 	
+ } // check hasInfixInTheParentheses()
+
+
+
+bool checkError3(string infixS){
+	
+	if( checkExtraOperator( infixS )){
+	cout << "paaa";
+		if(checkhasInfixInTheParentheses(infixS))
+			if(checkExtraOperand( infixS ))
+				return true;
+		}
+	return false;
+	
+} // checkError3
+
+
+
+
+
+int main(int argc, char** argv) {
+	int command = 0;
+	
+	do 
+	{
+		string infixS;
+		cout << endl << "*Arithmetic Expression Evaluator*";
+		cout << endl << "*0.QUIT						 *"; 
+		cout << endl << "*1.infix2Postfix Transformation *";
+		cout << endl << "*********************************";
+		cout << endl << "input a choice(0,1):";
+		cin >> command;	
+		cin.ignore(MAX_LEN,'\n');
+		
+		switch( command )
+		{
+			case 0:break;
+			case 1: cout << endl << "input an infix expression:";
+					getline(cin, infixS);
+					
+					if( checkHasIllegalChar(  infixS ) && checkHasUnnecessaryParenthese( infixS )&&   checkError3( infixS ))
+						cout << "It is a legitimate infix expression.";
+			
+				break;
+			
+			default: cout << endl << "Command does not exist" <<endl;
+			
+			
+			
+		} // switch()
+	
+	} while(command != 0); 
+	
+	system("pause");
+	return 0;
+
+
+
+	
+
+} // main()
+
+	      
+	      
